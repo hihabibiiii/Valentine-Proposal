@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Be My Valentine ❤️</title>
+
+<style>
+/* RESET */
+*{
+    box-sizing:border-box;
+}
+
+/* BODY */
+body{
+    margin:0;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:url("bg.png") no-repeat center center fixed;
+    background-size:cover;
+    font-family:'Segoe UI',sans-serif;
+    overflow:hidden;
+    padding:20px;
+}
+
+/* GLASS CARD */
+.box{
+    width:100%;
+    max-width:420px;
+    background:rgba(255,255,255,0.25);
+    backdrop-filter:blur(12px);
+    padding:clamp(24px,5vw,40px);
+    border-radius:clamp(20px,5vw,30px);
+    text-align:center;
+    color:white;
+    box-shadow:0 25px 50px rgba(0,0,0,0.3);
+    z-index:10;
+}
+
+/* 💫 RESPONSIVE ANIMATED TEXT */
+#msg{
+    font-size:clamp(20px,6vw,28px);
+    margin-bottom:clamp(18px,4vw,25px);
+    background:linear-gradient(
+      270deg,
+      #ff0000,
+      #ff69b4,
+      #ff1493,
+      #ffb6c1,
+      #ffffff
+    );
+    background-size:600% 600%;
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    animation:
+      gradientMove 5s ease infinite,
+      pulse 1.8s infinite,
+      glow 2s infinite alternate;
+}
+
+/* BUTTONS */
+button{
+    width:100%;
+    max-width:260px;
+    padding:clamp(12px,4vw,14px);
+    font-size:clamp(15px,4vw,16px);
+    border:none;
+    border-radius:30px;
+    cursor:pointer;
+    margin:8px auto;
+    transition:0.3s;
+    display:block;
+}
+
+#yes{background:#2ecc71;color:white}
+#no{background:#e74c3c;color:white}
+
+button:hover{transform:scale(1.05)}
+
+/* ANIMATIONS */
+@keyframes gradientMove{
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+
+@keyframes pulse{
+    0%,100%{transform:scale(1)}
+    50%{transform:scale(1.04)}
+}
+
+@keyframes glow{
+    from{text-shadow:0 0 10px rgba(255,255,255,0.4)}
+    to{text-shadow:0 0 25px rgba(255,105,180,0.9)}
+}
+
+/* FALLING HEARTS */
+.heart{
+    position:fixed;
+    top:-20px;
+    font-size:clamp(16px,5vw,22px);
+    animation:fall linear infinite;
+}
+
+@keyframes fall{
+    to{transform:translateY(110vh);opacity:0}
+}
+
+/* SPARKLES */
+.sparkle{
+    position:fixed;
+    width:clamp(4px,1.5vw,6px);
+    height:clamp(4px,1.5vw,6px);
+    background:white;
+    border-radius:50%;
+    opacity:0.8;
+    animation:spark 3s infinite;
+}
+
+@keyframes spark{
+    0%{transform:scale(0)}
+    50%{transform:scale(1)}
+    100%{transform:scale(0)}
+}
+
+/* SMALL PHONES */
+@media (max-width:360px){
+    .box{padding:20px}
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+    <h1 id="msg">Will you be my Valentine? ❤️</h1>
+    <button id="yes" onclick="yesClick()">Yes 💖</button>
+    <button id="no" onclick="noClick()">No 💔</button>
+</div>
+
+<!-- MUSIC -->
+<audio autoplay loop>
+    <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+let gfName = prompt("Enter your beautiful name ❤️");
+if(gfName){
+ document.getElementById("msg").innerText =
+ gfName + ", will you be my Valentine? 💖";
+}
+
+let noMessages=[
+ "Are you sure? 😢",
+ "Soch lo ek baar 🥺",
+ "Dil toot jayega 💔",
+ "Itna bhi bhav nahi 😭",
+ "Last chance hai 😔",
+ "Man jao na please ❤️",
+ "Itna cute proposal mana karogi? 🥹"
+];
+let i=0;
+
+/* Create audio */
+let music = new Audio("music.mp3");
+music.loop = true;
+
+function noClick(){
+ document.getElementById("msg").innerText =
+ noMessages[i % noMessages.length];
+ i++;
+}
+
+/* YES CLICK */
+function yesClick(){
+
+  music.play();   // 🎵 MUSIC STARTS HERE
+
+  document.body.innerHTML=`
+  <div style="text-align:center">
+    <h1 style="
+      font-size:clamp(26px,8vw,36px);
+      background:linear-gradient(270deg,#ff0,#ff69b4,#ff0000);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      animation:gradientMove 4s infinite, glow 1.5s infinite alternate;
+    ">
+      Yayyy ${gfName}! 💖🎉
+    </h1>
+    <h2>You are my Valentine 😘</h2>
+    <h3>I Love You ❤️</h3>
+  </div>`;
+
+  setInterval(createHeart,180);
+}
+
+/* HEART RAIN */
+function createHeart(){
+ let h=document.createElement("div");
+ h.className="heart";
+ h.innerHTML="❤️";
+ h.style.left=Math.random()*100+"vw";
+ h.style.animationDuration=(3+Math.random()*3)+"s";
+ document.body.appendChild(h);
+ setTimeout(()=>h.remove(),6000);
+}
+
+/* SPARKLES */
+setInterval(()=>{
+ let s=document.createElement("div");
+ s.className="sparkle";
+ s.style.left=Math.random()*100+"vw";
+ s.style.top=Math.random()*100+"vh";
+ document.body.appendChild(s);
+ setTimeout(()=>s.remove(),3000);
+},120);
+</script>
+
+
+</body>
+</html>
